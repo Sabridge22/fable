@@ -42,15 +42,18 @@ class UserService:
         return UserResponseSchema.model_validate(new_user)
 
 
-    def get_user_by_id(self, user_id) -> UserResponseSchema:
+    def get_user_by_id(self, user_id: str) -> UserResponseSchema:
         user = self.user_repository.get_by_id(user_id=user_id)
         if user is None:
             raise UserNotFound("User not found")
         return UserResponseSchema.model_validate(user)
 
 
-    def get_user_by_username(self):
-        ...
+    def get_user_by_username(self, username: str) -> UserResponseSchema:
+        user = self.user_repository.get_by_username(username=username)
+        if user is None:
+            raise UserNotFound("User not found")
+        return UserResponseSchema.model_validate(user)
 
 
     def get_user_by_email(self):
