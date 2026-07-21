@@ -14,9 +14,9 @@ class Settings(BaseSettings):
     DB_MAX_OVERFLOW: int = 10
     DB_ECHO: bool = False
 
-    TELEGRAM_BOT_TOKEN: str
+
     GEMINI_API_KEY: str
-    WEBHOOK_URL: str
+
 
     class Config:
         env_file = ".env"
