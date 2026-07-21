@@ -93,5 +93,7 @@ class UserService:
         
 
 
-    def get_all_users(self):
-        ...
+    def get_all_users(self, limit: int = 10, offset: int = 0) -> list[UserResponseSchema]:
+        users = self.user_repository.get_all(limit=limit, offset=offset)
+        return [UserResponseSchema.model_validate(user) for user in users]
+        
