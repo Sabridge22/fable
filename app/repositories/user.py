@@ -34,10 +34,6 @@ class UserRepository:
     def delete(self, user: UserORM) -> None:
         self.db.delete(user)
 
-    def delete_by_id(self, user_id: str) -> None:
-        user = self.get_by_username(user_id)
-        if user:
-            self.db.delete(user)
 
     def get_all(self, limit: int = 10, offset: int = 0) -> list[UserORM]:
         stmt = select(UserORM).limit(limit=limit).offset(offset=offset)

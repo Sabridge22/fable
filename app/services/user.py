@@ -84,8 +84,13 @@ class UserService:
         return UserResponseSchema.model_validate(user)
     
 
-    def delete_user(self):
-        ...
+    def delete_user(self, user_id: str) -> None:
+        user = self.user_repository.get_by_id(user_id=user_id)
+        if user is None:
+            raise UserNotFound("User not found")
+        self.user_repository.delete(user=user)
+        self.db.commit()
+        
 
 
     def get_all_users(self):
