@@ -61,11 +61,27 @@ class UserService:
         if user is None:
             raise UserNotFound("User not found")
         return UserResponseSchema.model_validate(user)
+
+
+    def update_user(self, user_id: str, update_data: UserUpdateSchema) -> UserResponseSchema:
         
+        user = self.user_repository.get_by_id(user_id=user_id)
+        if user is None:
+            raise UserNotFound("User not found")
+        if update_data.username is not None:
+            existing = self.user_repository.get_by_username(username=update_data.username)
+            if existing and existing.id != user_id:
+                raise UserAlreadyExists("Username already taken")
 
+        update_dict = {k: v for k, v in update_data.model_dump().items() if v is not None} # делаем словарь без полей с None
 
-    def update_user(self):
-        ...
+        if not update_dict:
+            return UserResponseSchema.model_validate(user)
+
+        user = self.user_repository.update(user=user, data=update_dict)
+        self.db.commit()
+        self.db.refresh(user)
+        return UserResponseSchema.model_validate(user)
     
 
     def delete_user(self):
