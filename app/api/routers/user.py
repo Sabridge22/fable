@@ -26,3 +26,11 @@ def get_user_by_id(user_id: str, db: Session = Depends(get_db)):
         return service.get_user_by_id(user_id=user_id)
     except UserNotFound as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    
+@router.get('/username/{username}', response_model=UserResponseSchema, status_code=status.HTTP_200_OK)
+def get_user_by_username(username: str, db: Session = Depends(get_db)):
+    service = UserService(db)
+    try:
+        return service.get_user_by_username(username=username)
+    except UserNotFound as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
