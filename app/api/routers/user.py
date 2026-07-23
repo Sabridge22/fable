@@ -44,3 +44,14 @@ def get_user_by_email(email: str, db: Session = Depends(get_db)):
         return service.get_user_by_email(email=email)
     except UserNotFound as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    
+
+@router.patch('/{user_id}', response_model=UserResponseSchema, status_code=status.HTTP_200_OK)
+def update_user(user_id: str, update_data: UserUpdateSchema, db: Session = Depends(get_db)):
+    service = UserService(db)
+    try:
+        return service.update_user(user_id=user_id, update_data=update_data)
+    except UserNotFound as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except UserAlreadyExists as e:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(e))
