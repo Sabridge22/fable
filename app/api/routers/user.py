@@ -55,3 +55,13 @@ def update_user(user_id: str, update_data: UserUpdateSchema, db: Session = Depen
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except UserAlreadyExists as e:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(e))
+
+
+@router.delete('/{user_id}', status_code=status.HTTP_204_NO_CONTENT)
+def delete_user(user_id: str, db: Session = Depends(get_db)) -> None:
+    service = UserService(db)
+    try:
+        service.delete_user(user_id=user_id)
+    except UserNotFound as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    
