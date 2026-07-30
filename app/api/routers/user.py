@@ -8,6 +8,10 @@ from app.services.user import UserNotFound, UserAlreadyExists, UserService, Perm
 from app.db.session import get_db
 from typing import Annotated
 
+from app.dependencies.auth import get_current_user
+from app.models.user import UserORM
+
+
 router = APIRouter(prefix="/users", tags=["User"])
 
 @router.post('/register', response_model=UserResponseSchema, status_code=status.HTTP_201_CREATED)
@@ -47,10 +51,10 @@ def get_user_by_email(email: str, db: Session = Depends(get_db)):
     
 
 @router.patch('/{user_id}', response_model=UserResponseSchema, status_code=status.HTTP_200_OK)
-def update_user(user_id: str, update_data: UserUpdateSchema, current_user_id: str, db: Session = Depends(get_db)):
+def update_user(user_id: str, update_data: UserUpdateSchema, current_user: UserORM = Depends(get_current_user), db: Session = Depends(get_db)):
     service = UserService(db)
     try:
-        return service.update_user(user_id=user_id, current_user_id=current_user_id, update_data=update_data)
+        return service.update_user(user_id=user_id, current_user_id=current_user.id, update_data=update_data)
     except UserNotFound as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except UserAlreadyExists as e:
@@ -61,10 +65,10 @@ def update_user(user_id: str, update_data: UserUpdateSchema, current_user_id: st
 
 
 @router.delete('/{user_id}', status_code=status.HTTP_204_NO_CONTENT)
-def delete_user(user_id: str, current_user_id: str, db: Session = Depends(get_db)) -> None:
+def delete_user(user_id: str, current_user: UserORM = Depends(get_current_user), db: Session = Depends(get_db)) -> None:
     service = UserService(db)
     try:
-        service.delete_user(user_id=user_id, current_user_id=current_user_id)
+        service.delete_user(user_id=user_id, current_user_id=current_user.id)
     except UserNotFound as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except PermissionDenied as e:

@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from app.models.user import UserORM
 from app.repositories.user import UserRepository
 from app.schemas.user import UserCreateSchema, UserResponseSchema, UserUpdateSchema
 
@@ -102,4 +103,7 @@ class UserService:
     def get_all_users(self, limit: int = 10, offset: int = 0) -> list[UserResponseSchema]:
         users = self.user_repository.get_all(limit=limit, offset=offset)
         return [UserResponseSchema.model_validate(user) for user in users]
+
+    def get_user_orm_by_email(self, email: str) -> UserORM | None:
+        return self.user_repository.get_by_email(email)
         
