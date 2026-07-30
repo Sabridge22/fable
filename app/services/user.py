@@ -14,6 +14,9 @@ class UserAlreadyExists(Exception):
     """Пользователь уже существует"""
     ...
 
+class PermissionDenied(Exception):
+    """Нет прав для выполнения операции"""
+    ...
 
 class UserService:
     def __init__(self, db: Session) -> None:
@@ -63,11 +66,12 @@ class UserService:
         return UserResponseSchema.model_validate(user)
 
 
-    def update_user(self, user_id: str, update_data: UserUpdateSchema) -> UserResponseSchema:
-        
+    def update_user(self, user_id: str, current_user_id: str, update_data: UserUpdateSchema) -> UserResponseSchema:
         user = self.user_repository.get_by_id(user_id=user_id)
         if user is None:
             raise UserNotFound("User not found")
+        if user_id != current_user_id:
+            raise PermissionDenied("You can only update your own profile")
         if update_data.username is not None:
             existing = self.user_repository.get_by_username(username=update_data.username)
             if existing and existing.id != user_id:
@@ -84,10 +88,12 @@ class UserService:
         return UserResponseSchema.model_validate(user)
     
 
-    def delete_user(self, user_id: str) -> None:
+    def delete_user(self, user_id: str, current_user_id: str) -> None:
         user = self.user_repository.get_by_id(user_id=user_id)
         if user is None:
             raise UserNotFound("User not found")
+        if user_id != current_user_id:
+            raise PermissionDenied("You can only update your own profile")
         self.user_repository.delete(user=user)
         self.db.commit()
         
