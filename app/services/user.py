@@ -4,7 +4,7 @@ from app.schemas.user import UserCreateSchema, UserResponseSchema, UserUpdateSch
 
 from passlib.context import CryptContext
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
 class UserNotFound(Exception):
     """Пользователь не найден"""

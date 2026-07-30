@@ -8,7 +8,7 @@ from app.services.user import UserNotFound, UserAlreadyExists, UserService, Perm
 from app.db.session import get_db
 from typing import Annotated
 
-router = APIRouter(prefix="/users", tags=["Users"])
+router = APIRouter(prefix="/users", tags=["User"])
 
 @router.post('/register', response_model=UserResponseSchema, status_code=status.HTTP_201_CREATED)
 def register_user(user_data: UserCreateSchema, db: Session = Depends(get_db)):
