@@ -1,5 +1,5 @@
 from sqlalchemy import Boolean, Integer, String
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import mapped_column, Mapped, relationship
 from .base import Base
 
 class UserORM(Base):
@@ -12,4 +12,7 @@ class UserORM(Base):
     message_count: Mapped[int] = mapped_column(Integer, default=0)
     mistakes_count: Mapped[int] = mapped_column(Integer, default=0)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+
+
+    messages: Mapped[list["MessageORM"]] = relationship(back_populates="user")
     
