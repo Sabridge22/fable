@@ -29,3 +29,7 @@ class MessageService:
         self.db.commit()
         self.db.refresh(message_orm)
         return MessageResponseSchema.model_validate(message_orm)
+
+    def get_user_history(self, user_id: str, limit: int = 100, offset: int = 0) -> list[MessageResponseSchema]:
+        messages = self.message_repository.get_messages_by_user_id(user_id=user_id, limit=limit, offset=offset)
+        return [MessageResponseSchema.model_validate(message) for message in messages]
