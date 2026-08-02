@@ -33,3 +33,10 @@ class MessageService:
     def get_user_history(self, user_id: str, limit: int = 100, offset: int = 0) -> list[MessageResponseSchema]:
         messages = self.message_repository.get_messages_by_user_id(user_id=user_id, limit=limit, offset=offset)
         return [MessageResponseSchema.model_validate(message) for message in messages]
+
+    def send_message(self, user_id: str, content: str) -> MessageResponseSchema:
+        self.create_user_message(user_id=user_id, content=content)
+
+        response_content = f"Echo: {content}"  # TODO: заменить на реальный вызов API
+
+        return self.create_assistant_message(user_id=user_id, content=response_content)
