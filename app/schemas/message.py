@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class MessageCreateSchema(BaseModel):
     content: str
+    user_id: str
 
 class MessageResponseSchema(BaseModel):
     id: str
