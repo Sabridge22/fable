@@ -3,13 +3,13 @@ from pydantic import BaseModel
 
 class MessageCreateSchema(BaseModel):
     content: str
-    user_id: str
+
 
 class MessageResponseSchema(BaseModel):
     id: str
     user_id: str
     content: str
-    response: str
+    role: str
     created_at: datetime
 
     class Config:

@@ -7,8 +7,8 @@ class MessageRepository:
     def __init__(self, db: Session) -> None:
         self.db = db
 
-    def create(self, user_id: str, content: str, response: str) -> MessageORM:
-        new_message = MessageORM(user_id=user_id, content=content, response=response)
+    def create(self, user_id: str, content: str, role: str) -> MessageORM:
+        new_message = MessageORM(user_id=user_id, content=content, role=role)
         self.db.add(new_message)
         return new_message
 

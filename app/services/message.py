@@ -10,13 +10,22 @@ class MessageService:
         self.message_repository = MessageRepository(db)
         self.user_repository = UserRepository(db)
 
-    def create_message(self, message_data: MessageCreateSchema) -> MessageResponseSchema:
-        if self.user_repository.get_by_id(user_id=message_data.user_id) is None:
-            raise UserNotFound(f"User with id {message_data.user_id} not found")
-
-        response_content = f"Echo: {message_data.content}"  # TODO: подключить Gemini
+    def create_user_message(self, user_id: str, content: str) -> MessageResponseSchema:
+        if self.user_repository.get_by_id(user_id=user_id) is None:
+            raise UserNotFound(f"User with id {user_id} not found")
         
-        message_orm = self.message_repository.create(user_id=message_data.user_id, content=message_data.content, response=response_content)
+        message_orm = self.message_repository.create(user_id=user_id, content=content, role="user")
 
         self.db.commit()
+        self.db.refresh(message_orm)
+        return MessageResponseSchema.model_validate(message_orm)
+    
+    def create_assistant_message(self, user_id: str, content: str) -> MessageResponseSchema:
+        if self.user_repository.get_by_id(user_id=user_id) is None:
+            raise UserNotFound(f"User with id {user_id} not found")
+        
+        message_orm = self.message_repository.create(user_id=user_id, content=content, role="assistant")
+
+        self.db.commit()
+        self.db.refresh(message_orm)
         return MessageResponseSchema.model_validate(message_orm)
