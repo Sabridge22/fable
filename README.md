@@ -1,4 +1,4 @@
-# 🤖 AI-репетитор английского языка
+# AI-репетитор английского языка
 
 Бэкенд-сервис для изучения английского языка через диалог с нейросетью.
 
@@ -68,17 +68,17 @@ Swagger документация — http://localhost:8000/docs
 
 ##  Структура проекта
 fade_chat/
-├── alembic/                 # Миграции БД
+├── alembic/ # Миграции БД
 ├── app/
-│   ├── api/
-│   │   └── routers/         # Эндпоинты (auth, users, chat)
-│   ├── core/                # Конфиг, JWT, логи
-│   ├── db/                  # Подключение к БД
-│   ├── dependencies/        # get_current_user
-│   ├── models/              # SQLAlchemy модели
-│   ├── repositories/        # Работа с БД (CRUD)
-│   ├── schemas/             # Pydantic схемы
-│   └── services/            # Бизнес-логика
+│ ├── api/
+│ │ └── routers/ # Эндпоинты (auth, users, chat)
+│ ├── core/ # Конфиг, JWT, логи
+│ ├── db/ # Подключение к БД
+│ ├── dependencies/ # get_current_user
+│ ├── models/ # SQLAlchemy модели
+│ ├── repositories/ # Работа с БД (CRUD)
+│ ├── schemas/ # Pydantic схемы
+│ └── services/ # Бизнес-логика
 ├── .env.example
 ├── requirements.txt
 └── README.md
