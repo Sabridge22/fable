@@ -30,38 +30,47 @@
 ## Старт
 
 ### 1. Клонировать репозиторий
+```bash
 git clone https://github.com/ваш-аккаунт/fade_chat.git
 cd fade_chat
-
+```
 
 ### 2. Создать виртуальное окружение
+```bash
 python -m venv venv
 source venv/bin/activate      # Linux/Mac
 venv\Scripts\activate         # Windows
-
+```
 
 ### 3. Установить зависимости
+```bash
 pip install -r requirements.txt
-
+```
 
 ### 4. Создать файл .env по примеру
+```plaintext
 DATABASE_URL=postgresql+psycopg://postgres:admin@localhost:35432/chatdb
 SECRET_KEY=your-secret-key
 JWT_ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 GEMINI_API_KEY=your_gemini_api_key
 LOG_LEVEL=INFO
-
+```
 
 ### 5. Запустить PostgreSQL в Docker
-docker 
+```bash
+docker run --name your_db_name -e POSTGRES_PASSWORD=your_password -e POSTGRES_DB=your_db_name -d -p 5432:5432 postgres
+```
 
 ### 6. Применить миграции
+```bash
 alembic upgrade head
-
+```
 
 ### 7. Запустить сервер
+```bash
 uvicorn app.main:app --reload
+```
 
 Сервер запустится на http://localhost:8000
 Swagger документация — http://localhost:8000/docs
