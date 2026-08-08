@@ -1,9 +1,14 @@
+import logging
+
 from sqlalchemy.orm import Session
 from app.models.user import UserORM
 from app.repositories.user import UserRepository
 from app.schemas.user import UserCreateSchema, UserResponseSchema, UserUpdateSchema
 
 from passlib.context import CryptContext
+
+
+logger = logging.getLogger(__name__)
 
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
@@ -34,6 +39,7 @@ class UserService:
 
 
     def register_user(self, user_data: UserCreateSchema) -> UserResponseSchema:
+        logger.info(f"Регистрация: проверка уникальности {user_data.email}")
         if self.user_repository.get_by_username(user_data.username) is not None:
             raise UserAlreadyExists("Username already taken")
         if self.user_repository.get_by_email(user_data.email) is not None:
