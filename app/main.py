@@ -5,12 +5,15 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.db.session import engine
 from app.core.config import settings
+from app.core.logging import setup_logging
 from app.models.base import Base
 
 from app.api.routers.user import router as user_router
 from app.api.routers.auth import router as auth_router
 from app.api.routers.chat import router as chat_router
 
+
+setup_logging(settings.LOG_LEVEL)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

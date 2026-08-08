@@ -14,6 +14,8 @@ class Settings(BaseSettings):
     DB_MAX_OVERFLOW: int = 10
     DB_ECHO: bool = False
 
+    LOG_LEVEL: str = "INFO"
+
 
     GEMINI_API_KEY: str
 
