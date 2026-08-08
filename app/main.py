@@ -14,10 +14,7 @@ from app.api.routers.chat import router as chat_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print('Создание таблиц...')
-    print(f'Таблицы: {list(Base.metadata.tables.keys())}')
     Base.metadata.create_all(bind=engine)
-    print('Таблицы созданы')
     yield
 
 
