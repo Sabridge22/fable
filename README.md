@@ -67,6 +67,7 @@ uvicorn app.main:app --reload
 Swagger документация — http://localhost:8000/docs
 
 ##  Структура проекта
+```plaintext
 fade_chat/
 ├── alembic/ # Миграции БД
 ├── app/
@@ -82,6 +83,7 @@ fade_chat/
 ├── .env.example
 ├── requirements.txt
 └── README.md
+```
 
 ## Доступные эндпоинты
 ### Аутентификация (/auth)
