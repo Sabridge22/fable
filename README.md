@@ -9,6 +9,8 @@
 - **Чат с Gemini AI** — диалог на английском с исправлением ошибок
 - **JWT-аутентификация** — регистрация, вход, защита эндпоинтов
 - **История сообщений** — все диалоги сохраняются в БД
+- **Docker-контейнеризация** — лёгкий запуск в любой среде
+- **Миграции через Alembic** — безопасное изменение структуры БД
 - **Чистая архитектура** — слои: репозитории -> сервисы -> роутеры
 
 ---
@@ -21,13 +23,49 @@
 - **Alembic** — миграции
 - **JWT** — аутентификация
 - **Gemini API** — генерация ответов
-- **Docker** — база данных (создание через контейнер)
+- **Docker** + **Docker Compose** — контейнеризация
 - **Pydantic** — валидация данных
 - **Logging** — логирование
 
 ---
+## Быстрый запуск с Docker
 
-## Старт
+### 1. Клонировать репозиторий
+```bash
+git clone https://github.com/ваш-аккаунт/fade_chat.git
+cd fade_chat
+```
+### 2. Создать файл .env по примеру с
+```plaintext
+DATABASE_URL=postgresql+psycopg://postgres:postgrespw@db:5432/chatdb
+SECRET_KEY=your-secret-key-here
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+GEMINI_API_KEY=your_api_key
+LOG_LEVEL=INFO
+
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgrespw
+POSTGRES_DB=chatdb
+POSTGRES_PORT=35432
+```
+
+### 3. Запуск командой
+```bash
+docker-compose up --build
+```
+
+Сервер запустится на http://localhost:8000
+Swagger документация — http://localhost:8000/docs
+
+
+### 4. Остановить
+```bash
+docker-compose down
+```
+
+## Локальный запуск без Docker
 
 ### 1. Клонировать репозиторий
 ```bash
@@ -92,6 +130,8 @@ fade_chat/
 ├── .env.example
 ├── requirements.txt
 └── README.md
+├── Dockerfile # Инструкция для сборки образа
+├── docker-compose.yml # Оркестрация контейнеров (app + db)
 ```
 
 ## Доступные эндпоинты
