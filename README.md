@@ -35,7 +35,7 @@
 git clone https://github.com/ваш-аккаунт/fade_chat.git
 cd fade_chat
 ```
-### 2. Создать файл .env по примеру с
+### 2. Создать файл .env по примеру с .env.example
 ```plaintext
 DATABASE_URL=postgresql+psycopg://postgres:postgrespw@db:5432/chatdb
 SECRET_KEY=your-secret-key-here
