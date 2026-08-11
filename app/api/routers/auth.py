@@ -19,9 +19,10 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
     logger.info(f"Попытка входа: {form_data.username}")
 
     service = UserService(db)
-    try:
-        user = service.get_user_orm_by_email(form_data.username)
-    except UserNotFound:
+    
+    user = service.get_user_orm_by_email(form_data.username)
+
+    if user is None:
         logger.warning(f"Неудачная попытка входа: пользователь {form_data.username} не найден")
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password", headers={"WWW-Authenticate": "Bearer"})
 

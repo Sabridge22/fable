@@ -49,7 +49,7 @@ def auth_token(client):
     client.post("/users/register", json={
         "username": "testuser",
         "email": "test@example.com",
-        "password": "testpassword123"
+        "password": "testpass123"
     })
     
     # логинимся
@@ -57,7 +57,7 @@ def auth_token(client):
         "/auth/login",
         data={
             "username": "test@example.com",
-            "password": "testpassword123"
+            "password": "testpass123"
         }
     )
     
