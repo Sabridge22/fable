@@ -20,7 +20,7 @@ class APIClient:
 
     @staticmethod
     async def send_message(token: str, content: str):
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=30.0) as client:
             return await client.post(
                 BotConfig.CHAT_URL,
                 json={"content": content},
