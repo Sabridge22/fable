@@ -27,6 +27,15 @@ def override_get_db():
 
 app.dependency_overrides[get_db] = override_get_db
 
+# фикстура: сессия БД для прямого доступа к данным
+@pytest.fixture
+def db_session():
+    db = TestingSessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 # фикстура: клиент для тестов
 @pytest.fixture
 def client():

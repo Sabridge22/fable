@@ -100,7 +100,7 @@ class UserService:
         if user is None:
             raise UserNotFound("User not found")
         if user_id != current_user_id:
-            raise PermissionDenied("You can only update your own profile")
+            raise PermissionDenied("You can only delete your own profile")
         self.user_repository.delete(user=user)
         self.db.commit()
         

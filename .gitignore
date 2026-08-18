@@ -245,9 +245,6 @@ temp/
 # FastAPI
 *.pid
 
-# Alembic (migrations)
-alembic/versions/*.py
-!alembic/versions/__init__.py
 
 # Static and media files
 static/

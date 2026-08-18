@@ -1,5 +1,10 @@
 # тесты для регистрации, обновления и удаления пользователей
 
+from sqlalchemy import select
+
+from app.models.message import MessageORM
+
+
 def test_register_success(client):
     """успешная регистрация"""
     response = client.post(
@@ -106,6 +111,27 @@ def test_update_user_forbidden(client, auth_token):
     )
     
     assert response.status_code == 403
+
+
+def test_delete_user_with_history_success(client, auth_token, db_session):
+    """удаление пользователя с историей сообщений, 204 + каскадное удаление"""
+    user_id = get_user_id(client, auth_token)
+
+    # вставляем сообщение напрямую в БД, минуя вызов LLM
+    db_session.add(MessageORM(user_id=user_id, content="Hello!", role="user"))
+    db_session.commit()
+
+    response = client.delete(
+        f"/users/{user_id}",
+        headers={"Authorization": f"Bearer {auth_token}"}
+    )
+    assert response.status_code == 204
+
+    # сообщения удалены каскадом вместе с пользователем
+    remaining = db_session.execute(
+        select(MessageORM).where(MessageORM.user_id == user_id)
+    ).scalar_one_or_none()
+    assert remaining is None
 
 
 def test_delete_user_success(client, auth_token):

@@ -5,6 +5,6 @@ from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
 
 class Base(DeclarativeBase):
     __abstract__ = True
-    id: Mapped[str] = mapped_column(primary_key=True, unique=True, default=lambda: str(uuid4()))
+    id: Mapped[str] = mapped_column(primary_key=True, default=lambda: str(uuid4()))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

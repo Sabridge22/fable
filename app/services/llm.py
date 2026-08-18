@@ -1,4 +1,5 @@
 from google import genai
+from google.genai import types
 from app.core.config import settings
 
 
@@ -7,7 +8,7 @@ class LLMService:
         self.client = genai.Client(api_key=settings.GEMINI_API_KEY)
         self.model = "models/gemini-3.1-flash-lite"
 
-    def generate_response(self, context: list[dict]) -> str:
+    def generate_response(self, context: list[dict], system_prompt: str = '') -> str:
         try:
             history = []
             for msg in context:
@@ -17,9 +18,11 @@ class LLMService:
                 })
             response = self.client.models.generate_content(
                 model=self.model,
-                contents=history
+                contents=history,
+                config=types.GenerateContentConfig(system_instruction=system_prompt)
             )
             return response.text
         except Exception as e:
             print(f"LLM API error: {e}")
             return "Извините, сейчас я не могу ответить. Попробуйте позже."
+        

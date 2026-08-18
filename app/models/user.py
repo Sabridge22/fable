@@ -14,5 +14,5 @@ class UserORM(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
 
-    messages: Mapped[list["MessageORM"]] = relationship(back_populates="user")
+    messages: Mapped[list["MessageORM"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     
