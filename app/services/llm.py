@@ -5,7 +5,7 @@ from app.core.config import settings
 
 class LLMService:
     def __init__(self) -> None:
-        self.client = genai.Client(api_key=settings.GEMINI_API_KEY)
+        self.client = genai.Client(api_key=settings.GEMINI_API_KEY, http_options=types.HttpOptions(timeout=30000))
         self.model = "models/gemini-3.1-flash-lite"
 
     def generate_response(self, context: list[dict], system_prompt: str = '') -> str:
